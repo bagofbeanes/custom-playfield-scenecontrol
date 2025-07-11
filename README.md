@@ -4,8 +4,8 @@ Scenecontrol to provide more extensive control over the ArcCreate playfield.
 
 ## > How to use
 
-1. Create a "Scenecontrol" (case-sensitive) folder within your chart folder
-2. [Download the latest .zip] (no link yet lol)
+1. If there isn't one already, create a "Scenecontrol" (case-sensitive) folder within your chart folder
+2. [Download the latest .zip](https://github.com/bagofbeanes/custom-playfield-scenecontrol/archive/refs/heads/main.zip)
 3. Extract the .zip contents into the "Scenecontrol" folder
 4. If necessary, merge the `init.lua` with that of other scenecontrols.
 
