@@ -1,6 +1,6 @@
 # Custom Playfield scenecontrol
 
-Provides more extensive control over the ArcCreate's playfield.
+Provides more extensive control over the ArcCreate playfield.
 
 ## > How to use
 
