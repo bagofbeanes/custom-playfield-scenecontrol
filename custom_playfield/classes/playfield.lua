@@ -136,7 +136,8 @@ function Playfield:new(skin, max_lane_count)
         if (i ~= 0) then
 
             local lanedivider_track_edge = ((i < 0 and o.trackEdgeL) or (i > 0 and o.trackEdgeR)).transformLayers[2]
-            lanedivider.active = math.sign(i) * (lanedivider.translationX - lanedivider_track_edge.translationX) -- Activate based on whether or not the line is within the track boundary
+            local leniency = 0.3
+            lanedivider.active = math.sign(i) * (lanedivider.translationX - lanedivider_track_edge.translationX) + leniency -- Activate based on whether or not the line is within the track boundary
 
         end
 
@@ -174,7 +175,8 @@ function Playfield:new(skin, max_lane_count)
         if (i ~= 0) then
 
             local lanedivider_track_edge = ((i < 0 and o.trackExtraEdgeL) or (i > 0 and o.trackExtraEdgeR)).transformLayers[2]
-            lanedivider.active = math.sign(i) * (lanedivider.translationX - lanedivider_track_edge.translationX) -- Activate based on whether or not the line is within the extra track boundary
+            local leniency = 0.3
+            lanedivider.active = math.sign(i) * (lanedivider.translationX - lanedivider_track_edge.translationX) + leniency -- Activate based on whether or not the line is within the extra track boundary
 
         end
 

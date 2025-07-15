@@ -19,7 +19,7 @@ local function setlanecount_main(self, lane_count, start_timing, end_timing, eas
     lane_count = math.clamp(lane_count, 0, self.maxLaneCount)
     Tween(track_lane_count, lane_count, start_timing, end_timing, easing)
     
-    local track_width = math.max(0, (lane_count / 4) - 0.005) -- Slightly smaller than needed to account for lane divider visibility between the regular and the extra track
+    local track_width = math.max(0, lane_count / 4) -- Slightly smaller than needed to account for lane divider visibility between the regular and the extra track
 
     do -- Scale the track & critical line
     
@@ -40,7 +40,7 @@ local function setlanecount_main(self, lane_count, start_timing, end_timing, eas
     do -- Handle lane dividers
 
         local max_lane_count_half = math.floor(self.maxLaneCount / 2) -- Lanes on one half of the track
-        local line_count_half = math.max(0, lane_count / 2 - 1) -- Amount of lines that should appear on one half of the track, minus the middle
+        local line_count_half = math.max(0, lane_count / 2) -- Amount of lines that should appear on one half of the track
 
         for i = -max_lane_count_half, max_lane_count_half do
 
