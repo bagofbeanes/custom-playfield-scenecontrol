@@ -1,4 +1,4 @@
-local constants = require 'custom_playfield.constants'
+local constants = require 'custom_playfield.util.constants'
 
 ---@class beane.CustomPlayfield.Playfield
 ---   @field maxLaneCount integer
@@ -109,10 +109,13 @@ function Playfield:new(skin, max_lane_count)
     -- -- Track initialization -- --
     -- [[                      ]] --
 
+    local track_scale = CreateKey(0) -- Lane count stuff
+    o.trackBody.transformLayers[2].scaleX = track_scale
+    o.trackCriticalLine.transformLayers[2].scaleX = track_scale
+
     ControllerObject.setParentC(o.trackController, o.playfieldController)
 
     ControllerObject.setParentC(o.trackBody, o.trackController)
-    o.trackBody.transformLayers[2].root.scaleX = CreateKey(0) -- setLaneCount scales this
     o.trackBody.textureScaleX = -(o.laneCount / 4) -- makes track texture not stretch with lane count
 
     ControllerObject.setParentC(o.trackEdgeController, o.trackController)
@@ -120,13 +123,22 @@ function Playfield:new(skin, max_lane_count)
     ControllerObject.setParentC(o.trackEdgeR, o.trackEdgeController)
 
     ControllerObject.setParentC(o.trackCriticalLine, o.trackController)
-    o.trackCriticalLine.transformLayers[2].root.scaleX = CreateKey(0)
 
     ControllerObject.setParentC(o.trackLaneDividerController, o.trackController)
     for i = -lanes_half, lanes_half do
 
         o.trackLaneDividers[i] = LayeredSpriteObject:new(PlayfieldSkin.createTrackLaneDividerSprite(skin), 2)
         ControllerObject.setParentC(o.trackLaneDividers[i], o.trackLaneDividerController)
+
+        local lanedivider = o.trackLaneDividers[i].transformLayers[2]
+        lanedivider.translationX = CreateKey(-constants.laneWidth * i)
+
+        if (i ~= 0) then
+
+            local lanedivider_track_edge = ((i < 0 and o.trackEdgeL) or (i > 0 and o.trackEdgeR)).transformLayers[2]
+            lanedivider.active = math.sign(i) * (lanedivider.translationX - lanedivider_track_edge.translationX) -- Activate based on whether or not the line is within the track boundary
+
+        end
 
     end
 
@@ -137,23 +149,34 @@ function Playfield:new(skin, max_lane_count)
     -- -- Extra track initialization -- --
     -- [[                            ]] --
 
+    local trackextra_scale = CreateKey(0) -- Lane count stuff
+    o.trackExtraBody.transformLayers[2].scaleX = trackextra_scale
+    o.trackExtraCriticalLine.transformLayers[2].scaleX = trackextra_scale
+
     ControllerObject.setParentC(o.trackExtraController, o.playfieldController)
 
     ControllerObject.setParentC(o.trackExtraBody, o.trackExtraController)
-    o.trackExtraBody.transformLayers[2].scaleX = CreateKey(0) -- setExtraLaneCount scales this
 
     ControllerObject.setParentC(o.trackExtraEdgeController, o.trackExtraController)
     ControllerObject.setParentC(o.trackExtraEdgeL, o.trackExtraEdgeController)
     ControllerObject.setParentC(o.trackExtraEdgeR, o.trackExtraEdgeController)
 
     ControllerObject.setParentC(o.trackExtraCriticalLine, o.trackExtraController)
-    o.trackExtraCriticalLine.transformLayers[2].scaleX = CreateKey(0)
 
     ControllerObject.setParentC(o.trackExtraLaneDividerController, o.trackExtraController)
     for i = -lanes_half, lanes_half do
 
         o.trackExtraLaneDividers[i] = LayeredSpriteObject:new(PlayfieldSkin.createTrackExtraLaneDividerSprite(skin), 2)
         ControllerObject.setParentC(o.trackExtraLaneDividers[i], o.trackExtraLaneDividerController)
+
+        local lanedivider = o.trackExtraLaneDividers[i].transformLayers[2]
+        lanedivider.translationX = CreateKey(-constants.laneWidth * i)
+        if (i ~= 0) then
+
+            local lanedivider_track_edge = ((i < 0 and o.trackExtraEdgeL) or (i > 0 and o.trackExtraEdgeR)).transformLayers[2]
+            lanedivider.active = math.sign(i) * (lanedivider.translationX - lanedivider_track_edge.translationX) -- Activate based on whether or not the line is within the extra track boundary
+
+        end
 
     end
 
@@ -172,10 +195,27 @@ function Playfield:new(skin, max_lane_count)
     -- [[                          ]] --
     -- -- ------------------------ -- --
 
+    local proxy = {}
+    local mt = {
+
+        __index = o,
+
+        __newindex = 
+            function(t, k, v)
+
+                if k == "laneCount" then return end
+                if k == "laneCountExtra" then return end
+
+                o[k] = v
+
+            end
+
+    }
+    setmetatable(proxy, mt)
 
     setmetatable(o, self)
     self.__index = self
 
-    return o
+    return proxy
 
 end

@@ -1,6 +1,4 @@
-local constants = require 'custom_playfield.constants'
-
-local line_width_default = GetDefaultValue(Scene.track.divideLine23.scaleX) * GetDefaultValue(Scene.track.scaleX)
+local constants = require 'custom_playfield.util.constants'
 
 ---@param self beane.CustomPlayfield.Playfield
 ---@param lane_count number
@@ -10,28 +8,28 @@ local line_width_default = GetDefaultValue(Scene.track.divideLine23.scaleX) * Ge
 ---@param is_extra boolean
 local function setlanecount_main(self, lane_count, start_timing, end_timing, easing, is_extra)
 
+    start_timing = start_timing or constants.timingDefault
+
     local track_lane_count = (is_extra and self.laneCountExtra) or self.laneCount
     local track_body = (is_extra and self.trackExtraBody) or self.trackBody
-    local track_criticalline = (is_extra and self.trackExtraCriticalLine) or self.trackCriticalLine
     local track_edgeL = (is_extra and self.trackExtraEdgeL) or self.trackEdgeL
     local track_edgeR = (is_extra and self.trackExtraEdgeR) or self.trackEdgeR
     local track_lanedividers = (is_extra and self.trackExtraLaneDividers) or self.trackLaneDividers
 
-    lane_count = math.clamp(lane_count, 0.00001, self.maxLaneCount)
+    lane_count = math.clamp(lane_count, 0, self.maxLaneCount)
     Tween(track_lane_count, lane_count, start_timing, end_timing, easing)
     
-    local track_width = (lane_count / 4) - 0.005 -- Slightly smaller than needed to account for lane divider visibility between the regular and the extra track
+    local track_width = math.max(0, (lane_count / 4) - 0.005) -- Slightly smaller than needed to account for lane divider visibility between the regular and the extra track
 
     do -- Scale the track & critical line
     
         Tween(track_body.transformLayers[2].scaleX, track_width, start_timing, end_timing, easing)
-        Tween(track_criticalline.transformLayers[2].scaleX, track_width, start_timing, end_timing, easing)
 
     end
 
     do -- Move track edges
     
-        local edge_width = (36 / 512) * constants.laneWidth -- Width of a track edge (i think)
+        local edge_width = (36 / 512) * constants.laneWidth -- Width of a track edge
         local edge_translation = (edge_width + ((lane_count / 2) * constants.laneWidth)) - 0.033 -- Subtracting a very specific value from it to prevent a tiny space between the track and the edges
 
         Tween(track_edgeL.transformLayers[2].translationX, edge_translation, start_timing, end_timing, easing)
@@ -39,47 +37,44 @@ local function setlanecount_main(self, lane_count, start_timing, end_timing, eas
     
     end
 
-    do -- Handle divide lines
+    do -- Handle lane dividers
 
-        local track_half = math.floor(self.maxLaneCount / 2) -- Lanes on one half of the track
-        local line_count_half = lane_count / 2 - 1 -- Amount of lines that should appear on one half of the track, minus the middle
+        local max_lane_count_half = math.floor(self.maxLaneCount / 2) -- Lanes on one half of the track
+        local line_count_half = math.max(0, lane_count / 2 - 1) -- Amount of lines that should appear on one half of the track, minus the middle
 
-        local min_i_distance = track_half - line_count_half -- Minimum distance from the center index (0) required to move a line outwards (since outer lines are picked first)
-
-        for i = -track_half, track_half do
+        for i = -max_lane_count_half, max_lane_count_half do
 
             local lanedivider = track_lanedividers[i].transformLayers[2]
 
-            if (i ~= 0) then -- Transform every divide line but the middle one
+            if (i ~= 0) then -- Transform every lane divider but the middle one
 
-                if (math.abs(i) > math.floor(min_i_distance)) then -- Translate divide lines that are far enough from the center index (i think)
-                
-                    if (lanedivider.active.valueAt(start_timing or constants.timingDefault) == 0) then -- If line is inactive, make it active
-                    
-                        Tween(lanedivider.active, 1, start_timing)
+                local side_factor = math.sign(i)
+                local oddness_factor = math.ceil(line_count_half) - line_count_half
+                local line_position = constants.laneWidth * -side_factor * (math.abs(i) - oddness_factor)
 
+                if (math.abs(i) <= math.ceil(line_count_half)) then
+
+                    Tween(lanedivider.translationX, line_position, start_timing, end_timing, easing)
+
+                    local scale_end_timing = end_timing
+                    if start_timing ~= nil and end_timing ~= nil then
+                        scale_end_timing = start_timing + (end_timing - start_timing) / 2 -- Scaling will finish in half as much time
                     end
 
-                    local side_factor = math.sign(i) -- First and last divide lines are picked first and move out the furthest, closes in as necessary toward the center
-                    local line_translation = constants.laneWidth * (i - (side_factor * min_i_distance)) -- Where to translate the line (determined by which half it's on and how far the first line on each half is from the center index)
+                    Tween(lanedivider.scaleX, 1, start_timing, scale_end_timing, easing)
 
-                    Tween(lanedivider.translationX, line_translation, start_timing, end_timing, easing)
-                    Tween(lanedivider.scaleX, line_width_default, start_timing, end_timing, easing)
+                else
 
-                elseif (lanedivider.active.valueAt(start_timing or constants.timingDefault) == 1) then -- Move all other lines that aren't in the middle to the middle
-
-                    Tween(lanedivider.translationX, 0, start_timing, end_timing, easing)
+                    Tween(lanedivider.translationX, line_position, start_timing, end_timing, easing)
                     Tween(lanedivider.scaleX, 0, start_timing, end_timing, easing)
-                    
-                    Tween(lanedivider.active, 0, end_timing)
 
                 end
 
-            else -- Transform middle divide line
+            else -- Transform middle lane divider
 
                 if (lane_count % 2 == 0) then -- If lane lane_count is even, show middle line
         
-                    Tween(lanedivider.scaleX, line_width_default, start_timing, end_timing, easing)
+                    Tween(lanedivider.scaleX, 1, start_timing, end_timing, easing)
                     Tween(lanedivider.active, 1, start_timing)
                 
                 else -- Otherwise make the middle line disappear
