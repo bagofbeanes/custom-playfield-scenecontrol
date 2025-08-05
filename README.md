@@ -38,6 +38,8 @@ Scenecontrol to provide more extensive control over the ArcCreate playfield.
   - `skyInputController`: Controls all sky input elements
 - There are other elements besides these that control the inner parts of the playfield (e.g. `trackBody`, controls just the regular track body and none of its elements).
 
+- The track's speed is based on the first BPM of the chart. If you need a different base BPM, change `BASE_BPM` in `main.lua`.
+
 <hr>
 
 ### > Playfield element parenting

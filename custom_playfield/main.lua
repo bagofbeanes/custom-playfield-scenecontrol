@@ -1,6 +1,8 @@
 -- -- ------------ -- --
 -- [[              ]] --
 
+BASE_BPM = nil
+
 require 'custom_playfield.util.main'
 
 require 'custom_playfield.classes.controller'
