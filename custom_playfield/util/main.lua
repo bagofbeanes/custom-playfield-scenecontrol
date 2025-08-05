@@ -15,12 +15,15 @@ function Tween(channel, value, start_timing, end_timing, easing, additive)
     value = (additive and value_previous + value) or value
 
     if (start_timing ~= nil) then
+        channel.removeKeyAtTiming(start_timing)
+
         if (start_timing == end_timing or end_timing == nil) then -- Creates a single key if the start and end time are the same
             channel.addKey(start_timing, value, 'inconst')
         else
             channel.addKey(start_timing, value_previous, easing or 'l')
-                       .addKey(end_timing, value, 'inconst')
+                   .addKey(end_timing, value, 'bko')
         end
+
     else
         channel.addKey(constants.timingDefault, value, 'inconst')
     end
