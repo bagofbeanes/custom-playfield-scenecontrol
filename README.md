@@ -94,11 +94,13 @@ skin_list.skinname = PlayfieldSkin:new(
 
 - This is just a basic light side skin, but you can change the IDs to other built-in ones or add your own skin elements (explained below).
   
-- Skin elements are stored in the folder `custom_playfield/sprites/skins/`. From here, the folder names make the skin IDs.
-  - As an example, the built-in skins are located under `builtin/`, which stores each skin element in its own folder, such as `conflict/` and `light/`. Therefore the full skin ID is `builtin/conflict` and `builtin/light` respectively.
+- Skin elements are stored in the folder `custom_playfield/sprites/skins/`. The folder names from here make up the skin IDs.
+  - As an example, to create your own skin, you create a new folder (let's say `exampleskin`) at the path above. Then, if you place all of your skin elements in here, you simply access them by typing `exampleskin` as the ID. If you choose to place some skin elements in their own folder (let's say `abc`) within `exampleskin/`, you would access those with `exampleskin/abc` as the full skin ID.
+  - The built-in skins use the `builtin` ID, which contains all default track skin types in its own sub-ID, for example `conflict` or `light`. Therefore the full skin IDs for them are `builtin/conflict` and `builtin/light` respectively.
+  - There's also a `criticalline` sub-ID containing all types of critical lines as well as all other skin elements under the `builtin` skin ID in case needed, but by default, skin elements not dependent on side/track skin are provided by the editor for `builtin` skins.
 - `editor` is a special skin ID used when you want the skin element to be taken from the skin set in the editor.
 
-- The skin elements are:
+- List of all skin elements:
   - Regular track:
     - Body: `TrackBody.png`
     - Critical line: `TrackCriticalLine.png`
@@ -112,5 +114,6 @@ skin_list.skinname = PlayfieldSkin:new(
   - Sky input:
     - Line: `SkyInputLine.png`
     - Label: `SkyInputLabel.png`
+- You can find example images for all skin elements in the `builtin/` folder. As mentioned earlier, critical line types are stored under `builtin/criticallines/`.
 
 <hr>
