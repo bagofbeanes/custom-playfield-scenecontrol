@@ -42,16 +42,16 @@ PlayfieldSkin = {}
 
 ---Create a new skin. Unprovided skin IDs will default to the skin elements set in the editor
 ---@param self beane.CustomPlayfield.PlayfieldSkin
----@param id_track_body string
----@param id_track_criticalline string
----@param id_track_edge string
----@param id_track_lanedivider string
----@param id_trackextra_body string
----@param id_trackextra_criticalline string
----@param id_trackextra_edge string
----@param id_trackextra_lanedivider string
----@param id_skyinputline string
----@param id_skyinputlabel string
+---@param id_track_body? string
+---@param id_track_criticalline? string
+---@param id_track_edge? string
+---@param id_track_lanedivider? string
+---@param id_trackextra_body? string
+---@param id_trackextra_criticalline? string
+---@param id_trackextra_edge? string
+---@param id_trackextra_lanedivider? string
+---@param id_skyinputline? string
+---@param id_skyinputlabel? string
 function PlayfieldSkin:new(id_track_body, id_track_criticalline, id_track_edge, id_track_lanedivider, id_trackextra_body, id_trackextra_criticalline, id_trackextra_edge, id_trackextra_lanedivider, id_skyinputline, id_skyinputlabel)
 
     local o = {
@@ -181,7 +181,7 @@ function PlayfieldSkin.createTrackCriticalLineSprite(skin)
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/TrackCriticalLine.png', 'default', 'background', xy(0.5, 0), 'repeat')
+        sprite = Scene.createSprite(skin_path .. id .. '/TrackCriticalLine.png', 'default', 'background', xy(0.5, 0.5), 'repeat')
 
     end
 
@@ -368,7 +368,7 @@ function PlayfieldSkin.createTrackExtraCriticalLineSprite(skin)
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/TrackExtraCriticalLine.png', 'default', 'background', xy(0.5, 0), 'repeat')
+        sprite = Scene.createSprite(skin_path .. id .. '/TrackExtraCriticalLine.png', 'default', 'background', xy(0.5, 0.5), 'repeat')
 
     end
 
