@@ -10,11 +10,11 @@ local function setlanecount_main(self, lane_count, start_timing, end_timing, eas
 
     start_timing = start_timing or constants.timingDefault
 
-    local track_lane_count = (is_extra and self.laneCountExtra) or self.laneCount
-    local track_body = (is_extra and self.trackExtraBody) or self.trackBody
-    local track_edgeL = (is_extra and self.trackExtraEdgeL) or self.trackEdgeL
-    local track_edgeR = (is_extra and self.trackExtraEdgeR) or self.trackEdgeR
-    local track_lanedividers = (is_extra and self.trackExtraLaneDividers) or self.trackLaneDividers
+    local track_lane_count;     if is_extra then track_lane_count = self.laneCountExtra else track_lane_count = self.laneCount end
+    local track_body;           if is_extra then track_body = self.trackExtraBody else track_body = self.trackBody end
+    local track_edgeL;          if is_extra then track_edgeL = self.trackExtraEdgeL else track_edgeL = self.trackEdgeL end
+    local track_edgeR;          if is_extra then track_edgeR = self.trackExtraEdgeR else track_edgeR = self.trackEdgeR end
+    local track_lanedividers;   if is_extra then track_lanedividers = self.trackExtraLaneDividers else track_lanedividers = self.trackLaneDividers end
 
     lane_count = math.clamp(lane_count, 0, self.maxLaneCount)
     Tween(track_lane_count, lane_count, start_timing, end_timing, easing)
@@ -23,70 +23,77 @@ local function setlanecount_main(self, lane_count, start_timing, end_timing, eas
 
     do -- Scale the track & critical line
     
-        Tween(track_body.transformLayers[2].scaleX, track_width, start_timing, end_timing, easing)
+        if (track_body ~= nil) then
+            Tween(track_body.transformLayers[2].scaleX, track_width, start_timing, end_timing, easing)
+        end
 
     end
 
     do -- Move track edges
     
-        local edge_width = (36 / 512) * constants.laneWidth -- Width of a track edge
+        local edge_width = (35 / 512) * 1.125 * constants.laneWidth -- Width of a track edge (dont understand why 1.125 is needed but it works)
         local edge_translation = (edge_width + ((lane_count / 2) * constants.laneWidth)) - 0.033 -- Subtracting a very specific value from it to prevent a tiny space between the track and the edges
 
-        Tween(track_edgeL.transformLayers[2].translationX, edge_translation, start_timing, end_timing, easing)
-        Tween(track_edgeR.transformLayers[2].translationX, -edge_translation, start_timing, end_timing, easing)
+        if (track_edgeL ~= nil) then Tween(track_edgeL.transformLayers[2].translationX, edge_translation, start_timing, end_timing, easing) end
+        if (track_edgeR ~= nil) then Tween(track_edgeR.transformLayers[2].translationX, -edge_translation, start_timing, end_timing, easing) end
     
     end
 
     do -- Handle lane dividers
 
-        local max_lane_count_half = math.floor(self.maxLaneCount / 2) -- Lanes on one half of the track
-        local line_count_half = math.max(0, lane_count / 2) -- Amount of lines that should appear on one half of the track
+        if (track_lanedividers ~= nil) then
+    
+            local max_lane_count_half = math.floor(self.maxLaneCount / 2) -- Lanes on one half of the track
+            local line_count_half = math.max(0, lane_count / 2) -- Amount of lines that should appear on one half of the track
 
-        for i = -max_lane_count_half, max_lane_count_half do
+            for i = -max_lane_count_half, max_lane_count_half do
 
-            local lanedivider = track_lanedividers[i].transformLayers[2]
+                local lanedivider = track_lanedividers[i].transformLayers[2]
 
-            if (i ~= 0) then -- Transform every lane divider but the middle one
+                if (i ~= 0) then -- Transform every lane divider but the middle one
 
-                local side_factor = math.sign(i)
-                local oddness_factor = math.ceil(line_count_half) - line_count_half
-                local line_position = constants.laneWidth * -side_factor * (math.abs(i) - oddness_factor)
+                    local side_factor = math.sign(i)
+                    local oddness_factor = math.ceil(line_count_half) - line_count_half
+                    local line_position = constants.laneWidth * -side_factor * (math.abs(i) - oddness_factor)
 
-                if (math.abs(i) <= math.ceil(line_count_half)) then
+                    if (math.abs(i) <= math.ceil(line_count_half)) then
 
-                    Tween(lanedivider.translationX, line_position, start_timing, end_timing, easing)
+                        Tween(lanedivider.translationX, line_position, start_timing, end_timing, easing)
 
-                    local scale_end_timing = end_timing
-                    if start_timing ~= nil and end_timing ~= nil then
-                        scale_end_timing = start_timing + (end_timing - start_timing) / 2 -- Scaling will finish in half as much time
+                        local scale_end_timing = end_timing
+                        if start_timing ~= nil and end_timing ~= nil then
+                            scale_end_timing = start_timing + (end_timing - start_timing) / 2 -- Scaling will finish in half as much time
+                        end
+
+                        Tween(lanedivider.scaleX, 1, start_timing, scale_end_timing, easing)
+
+                    else
+
+                        Tween(lanedivider.translationX, line_position, start_timing, end_timing, easing)
+                        Tween(lanedivider.scaleX, 0, start_timing, end_timing, easing)
+
                     end
 
-                    Tween(lanedivider.scaleX, 1, start_timing, scale_end_timing, easing)
+                else -- Transform middle lane divider
 
-                else
-
-                    Tween(lanedivider.translationX, line_position, start_timing, end_timing, easing)
-                    Tween(lanedivider.scaleX, 0, start_timing, end_timing, easing)
-
-                end
-
-            else -- Transform middle lane divider
-
-                if (lane_count % 2 == 0) then -- If lane lane_count is even, show middle line
-        
-                    Tween(lanedivider.scaleX, 1, start_timing, end_timing, easing)
-                    Tween(lanedivider.active, 1, start_timing)
-                
-                else -- Otherwise make the middle line disappear
-                
-                    Tween(lanedivider.scaleX, 0, start_timing, end_timing, easing)
-                    Tween(lanedivider.active, 0, end_timing)
+                    if (lane_count % 2 == 0) then -- If lane lane_count is even, show middle line
             
+                        Tween(lanedivider.scaleX, 1, start_timing, end_timing, easing)
+                        Tween(lanedivider.active, 1, start_timing)
+                    
+                    else -- Otherwise make the middle line disappear
+                    
+                        Tween(lanedivider.scaleX, 0, start_timing, end_timing, easing)
+                        Tween(lanedivider.active, 0, end_timing)
+                
+                    end
+
                 end
 
             end
-
+            
         end
+        
     end
 
 end
