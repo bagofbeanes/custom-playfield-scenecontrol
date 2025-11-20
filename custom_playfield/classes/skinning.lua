@@ -134,7 +134,7 @@ function PlayfieldSkin.createTrackBodySprite(skin)
 
         sprite = Scene.createSprite(skin_path .. id .. '/TrackBody.png', 'default', 'background', xy(0.5, 0), 'repeat')
         
-        sprite.scaleY = 60
+        sprite.scaleY = 59.96094
         sprite.textureScaleX = -1
         sprite.textureScaleY = sprite.scaleY
         sprite.textureOffsetY = constants.trackWalk / sprite.scaleY
@@ -190,7 +190,7 @@ function PlayfieldSkin.createTrackCriticalLineSprite(skin)
         sprite,
         {
             translationX = 0, translationY = 0, translationZ = 0,
-            rotationX = -90, rotationY = 0, rotationZ = 0,
+            rotationX = 90, rotationY = 0, rotationZ = 0,
 
             colorR = 255, colorG = 255, colorB = 255, 
             colorH = 0, colorS = 0, colorV = 0,
@@ -252,11 +252,11 @@ function PlayfieldSkin.createTrackEdgeSprite(skin)
         }
     )
     sprite.translationZ = GetDefaultValue(track_default.translationZ)
-    sprite.scaleX = GetDefaultValue(track_default.edgeExtraL.scaleX) * GetDefaultValue(track_default.scaleX)
+    sprite.scaleX = GetDefaultValue(track_default.edgeExtraL.scaleX) * GetDefaultValue(track_default.scaleX) * 1.125 -- dont really understand this but it works
     sprite.scaleZ = GetDefaultValue(track_default.edgeExtraL.scaleZ)
 
     sprite.active = CreateKey(1)
-    sprite.sort = 3
+    sprite.sort = 1
     sprite.layer = 'Track'
 
     return sprite
@@ -273,6 +273,7 @@ function PlayfieldSkin.createTrackLaneDividerSprite(skin)
 
         sprite = track_default.divideLine23.copy()
         
+        sprite.scaleX = GetDefaultValue(track_default.divideLine23.scaleX) * GetDefaultValue(track_default.scaleX)
         sprite.scaleY = GetDefaultValue(track_default.divideLine23.scaleY)
 
     -- custom skin specific inits
@@ -280,11 +281,11 @@ function PlayfieldSkin.createTrackLaneDividerSprite(skin)
 
         sprite = Scene.createSprite(skin_path .. id .. '/TrackLaneDivider.png', 'default', 'background', xy(0.5, 0), 'repeat')
         
-        sprite.scaleY = 12.43724
+        sprite.scaleX = GetDefaultValue(track_default.divideLine23.scaleX) * GetDefaultValue(track_default.scaleX)
+        sprite.scaleY = 18.74961
 
     end
 
-    -- generic inits
     SetDefaultValues(
         sprite,
         {
@@ -292,14 +293,15 @@ function PlayfieldSkin.createTrackLaneDividerSprite(skin)
             rotationX = -90, rotationY = 0, rotationZ = 0
         }
     )
-    SetDefaultKeys(
+    SetDefaultValues(
         sprite,
         {
-            colorR = 255, colorG = 255, colorB = 255, colorA = 255
+            colorR = 255, colorG = 255, colorB = 255,
+            colorH = 0, colorS = 0, colorV = 0,
+            colorA = 255
         }
     )
     sprite.translationZ = GetDefaultValue(track_default.translationZ)
-    sprite.scaleX = GetDefaultValue(track_default.divideLine23.scaleX) * GetDefaultValue(track_default.scaleX)
     sprite.scaleZ = GetDefaultValue(track_default.divideLine23.scaleZ)
 
     sprite.active = CreateKey(1)
@@ -320,7 +322,7 @@ function PlayfieldSkin.createTrackExtraBodySprite(skin)
 
         sprite = track_default.extraL.copy()
 
-        sprite.scaleY = GetDefaultValue(Scene.track.extraL.scaleY)
+        sprite.scaleY = GetDefaultValue(track_default.extraL.scaleY)
 
     -- custom skin specific inits
     else
@@ -336,19 +338,21 @@ function PlayfieldSkin.createTrackExtraBodySprite(skin)
         sprite,
         {
             translationX = 0, translationY = 0,
-            rotationX = -90, rotationY = 0, rotationZ = 0,
+            rotationX = 90, rotationY = 0, rotationZ = 0,
             scaleX = 212.5 * 8,
 
             colorR = 255, colorG = 255, colorB = 255, 
             colorH = 0, colorS = 0, colorV = 0,
-            colorA = 255
+            colorA = 255,
+            
+            textureScaleX = -1
         }
     )
     sprite.translationZ = GetDefaultValue(track_default.translationZ)
     sprite.scaleZ = GetDefaultValue(track_default.extraL.scaleZ)
 
     sprite.active = CreateKey(1)
-    sprite.sort = -8
+    sprite.sort = -6
     sprite.layer = 'Track'
 
     return sprite
@@ -377,7 +381,7 @@ function PlayfieldSkin.createTrackExtraCriticalLineSprite(skin)
         sprite,
         {
             translationX = 0, translationY = 0,
-            rotationX = -90, rotationY = 0, rotationZ = 0,
+            rotationX = 90, rotationY = 0, rotationZ = 0,
 
             colorR = 255, colorG = 255, colorB = 255, 
             colorH = 0, colorS = 0, colorV = 0,
@@ -395,7 +399,7 @@ function PlayfieldSkin.createTrackExtraCriticalLineSprite(skin)
     sprite.scaleX = 4 * 0.99615 * GetDefaultValue(track_default.criticalLine2.scaleX) * GetDefaultValue(track_default.scaleX)
 
     sprite.active = CreateKey(1)
-    sprite.sort = -6
+    sprite.sort = -4
     sprite.layer = 'Track'
 
     return sprite
@@ -489,7 +493,7 @@ function PlayfieldSkin.createTrackExtraLaneDividerSprite(skin)
     sprite.scaleZ = GetDefaultValue(track_default.divideLine01.scaleZ)
 
     sprite.active = CreateKey(1)
-    sprite.sort = -4
+    sprite.sort = -5
     sprite.layer = 'Track'
 
     return sprite
@@ -509,7 +513,7 @@ function PlayfieldSkin.createSkyInputLineSprite(skin)
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/SkyInputLine.png', 'default', 'background', xy(0.5, 0), 'repeat')
+        sprite = Scene.createSprite(skin_path .. id .. '/SkyInputLine.png', 'default', 'background', xy(0.5, 0.5), 'repeat')
 
     end
 
@@ -519,7 +523,7 @@ function PlayfieldSkin.createSkyInputLineSprite(skin)
         {
             translationX = 0, translationY = 5.5, translationZ = 0,
 
-            colorR = 255, colorG = 255, colorB = 255, 
+            colorR = 255, colorG = 255, colorB = 255,
             colorH = 0, colorS = 0, colorV = 0,
             colorA = 255
         }
@@ -550,11 +554,25 @@ function PlayfieldSkin.createSkyInputLabelSprite(skin)
     if (id == id_default) then
 
         sprite = Scene.skyInputLabel.copy()
+        CopyDefaultValues(
+            sprite,
+            Scene.skyInputLabel,
+            {
+                'scaleX', 'scaleY'
+            }
+        )
     
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/SkyInputLabel.png', 'default', 'background', xy(0.5, 0), 'repeat')
+        sprite = Scene.createSprite(skin_path .. id .. '/SkyInputLabel.png', 'default', 'background', xy(0.5, 0.5), 'repeat')
+        SetDefaultValues(
+            sprite,
+            {
+                scaleX = 1, scaleY = 0.666666,
+                textureScaleX = -1
+            }
+        )
 
     end
 
@@ -564,7 +582,7 @@ function PlayfieldSkin.createSkyInputLabelSprite(skin)
         {
             translationX = 0, translationY = 5.65, translationZ = 0,
 
-            colorR = 255, colorG = 255, colorB = 255, 
+            colorR = 255, colorG = 255, colorB = 255,
             colorH = 0, colorS = 0, colorV = 0,
             colorA = 255
         }
@@ -574,12 +592,12 @@ function PlayfieldSkin.createSkyInputLabelSprite(skin)
         Scene.skyInputLabel,
         {
             'rotationX', 'rotationY', 'rotationZ',
-            'scaleY', 'scaleZ'
+            'scaleZ'
         }
     )
 
     sprite.active = CreateKey(1)
-    sprite.sort = 0
+    sprite.sort = -1
     sprite.layer = 'UI'
 
     return sprite

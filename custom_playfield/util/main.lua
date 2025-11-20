@@ -21,7 +21,7 @@ function Tween(channel, value, start_timing, end_timing, easing, additive)
             channel.addKey(start_timing, value, 'inconst')
         else
             channel.addKey(start_timing, value_previous, easing or 'l')
-                   .addKey(end_timing, value, 'bko')
+                   .addKey(end_timing, value, 'inconst')
         end
 
     else
@@ -47,6 +47,7 @@ end
 
 -- Returns a keyframe at the default timing (-9999) set to `value`
 ---@param default_value any
+---@return KeyChannel
 function CreateKey(default_value)
 
     local channel = Channel.keyframe()
@@ -175,3 +176,17 @@ end
 
 -- [[                        ]] --
 -- -- ---------------------- -- --
+
+-- -- Other functions -- --
+-- [[                 ]] --
+
+---@param ... integer
+function SelectOptions(...)
+    
+    local options = bit32.bor(0, ... or 0)
+    return options
+    
+end
+
+-- [[                 ]] --
+-- -- --------------- -- --
