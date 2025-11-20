@@ -18,73 +18,72 @@ Scenecontrol to provide more extensive control over the ArcCreate playfield.
 ## > Documentation
 
 > [!NOTE]
-> This scenecontrol is not configurable in the editor and expects a basic understanding of the Lua language and the ArcCreate scenecontrol API.
+> This scenecontrol is not configurable in the editor and requires a basic understanding of the Lua language and the ArcCreate scenecontrol API.
 
 <hr>
 
-### > Playfield creation and manipulation
+### > Playfield creation, manipulation
 
-- The original playfield is removed, meaning you need to create your own. The `init.lua` creates one for you by default, but you may want to customize it or add more.
-- To create a new playfield, use `Playfield:new()`.<br/>
-  This method has 2 parameters: `skin` and `max_lane_count`.
+- With this scenecontrol, you create your own playfields (container for a track, an extra track and the sky input line). `init.lua` creates one for you by default.
+- To create a new playfield, use `Playfield:new(<skin>, <max_lane_count>, <ignoreoptions>)`.<br/>
 
-  - `skin`: You can select a skin from the provided `skin_list` module. By default these are ArcCreate's preexisting track skins, but you can create your own as well (explained further below).
-  - `max_lane_count`: Determines the maximum amount of lanes a playfield can hold. This will be the cap for both the regular and the extra track.
+  - `skin`: You can select a skin from the provided `SkinList` module. By default these are ArcCreate's preexisting track skins, but you can create your own as well (explained later on).
+  - `max_lane_count`: The maximum amount of lanes a playfield can hold. This will be the cap for both the regular and the extra track.
+  - `ignoreoptions`: Options for skipping creation of specified playfield elements. Use `SelectOptions()` and as its arguments, list your selection from the `IgnoreOptions` class (e.g. `SelectOptions(IgnoreOptions.trackEdgeL, IgnoreOptions.trackEdgeR)`)
 
-- Use the playfield's fields to transform and manipulate it. The key elements are:
+- The playfield contains controllers which control their own elements. These controllers are:
   - `playfieldController`: Controls the entire playfield
-  - `trackController`: Controls just the regular track and its elements
-  - `trackExtraController`: Controls just the extra (6k) track and its elements, deactivated on creation
-  - `skyInputController`: Controls all sky input elements
-- There are other elements besides these that control the inner parts of the playfield (e.g. `trackBody`, controls just the regular track body and none of its elements).
+  - `trackController`: Controls just the normal track and its elements
+  - `trackExtraController`: Controls just the extra track and its elements, deactivated on creation
+  - `skyInputController`: Controls sky input elements
+- `trackBody`, for example, is controlled by `trackController` while `skyInputLine` is controlled by `skyInputController`.
 
-- The track's speed is based on the first BPM of the chart. If you need a different base BPM, change `BASE_BPM` in `main.lua`.
+- The track's scroll speed is determined by the first BPM in the chart. To use a different BPM for this, change `BASE_BPM` in `custom_playfield/main.lua`.
 
 <hr>
 
 ### > Playfield element parenting
 
-- Playfield elements behave like normal Controllers for the most part. One of the exceptions is parenting.
-- If you want to parent a playfield element to a Controller or parent a Controller to it, you'll need to use `ControllerObject.setParentC()`.<br/>
-  This method has 2 parameters: `child` and `parent`.
+- For the most part, playfield elements behave like normal Controllers. Parenting is an exception.
+- To parent a playfield element to a Controller (or the other way around), you use `ControllerObject.setParentC(<child>, <parent>)`.<br/>
   
-  - `child`: The Controller or playfield element (`ControllerObject`) to be parented
-  - `parent`: The parent Controller or playfield element (`ControllerObject`)
+  - `child`: The Controller or playfield element (ControllerObject) to be parented
+  - `parent`: The parent Controller or playfield element (ControllerObject)
 
 <hr>
 
 ### > Track lane count
 
-- You can set the number of lanes a track has, for both the regular and the extra track.
-- To set the lane count of the regular track, use `<playfield_name>:setLaneCount()`.<br/>
-  To set it on the extra track, use `<playfield_name>:setExtraLaneCount()`.<br/>
-  Both have 4 parameters: `lane_count`, `start_timing`, `end_timing` and `easing`.
+- This scenecontrol makes it possible to set the number of lanes a track has, on both the normal and the extra track.
+- To set the lane count of the normal track, use `<playfield_name>:setLaneCount(<lane_count>, <start_timing>, <end_timing>, <easing>)`.<br/>
+  To set it on the extra track, use `<playfield_name>:setExtraLaneCount(<lane_count>, <start_timing>, <end_timing>, <easing>)`.<br/>
 
-  - `lane_count`: The number of lanes to display (any number from 0 to `maxLaneCount`)
-  - `start_timing`: The start timing of the lane animation (in ms)
-  - `end_timing`: The end timing of the lane animation (in ms). Optional; if omitted, `start_timing` will be used as the end timing.
-  - `easing`: The easing type to use for the lane animation. Optional; if omitted, a linear easing type will be used.
+  - `lane_count`: The number of lanes to set to (any number from 0 to `maxLaneCount`)
+  - `start_timing`: The start timing of the lane tween (in ms)
+  - `end_timing`: The end timing of the lane tween (in ms). Optional; if omitted, `start_timing` will be used as the end timing.
+  - `easing`: The easing type to use for the lane tween. Optional; if omitted, linear easing will be used.
 
-- It's important to mention here that you can use `Context.laneFrom` and `Context.laneTo` to modify the range of the floor input indicator.
-- This scenecontrol adds an additional field: `Context.skyInputHeight`, which controls the maximum height of the sky input indicator.
+- You can use `Context.laneFrom` and `Context.laneTo` to modify the range of the floor input.
+- You can also use `Context2.skyInputHeight` to modify the maximum height of the sky input.
+- Both floor and sky input ranges apply globally and cannot be set per playfield.
 
 <hr>
 
 ### > Playfield skinning
 
-- As mentioned above, this scenecontrol also allows the skinning of the playfield. There are built-in skins which use ArcCreate's assets, accessible via the `skin_list` module.
-- To add to this list, go to `custom_playfield/skinlist.lua` and create your own skin using this format:
+- As previously mentioned, this scenecontrol allows the skinning of each playfield. By default, there are built-in skins which use ArcCreate's assets, accessible via the `SkinList` module.
+- To expand this list, go to `custom_playfield/skinlist.lua` and create your own skin using a format similar to the following:
   
 ```lua
-skin_list.skinname = PlayfieldSkin:new(
+skin_list.exampleskin = PlayfieldSkin:new(
 
-    'builtin/light', -- track
-    'editor', -- critical line
-    'builtin/light', -- track edge
+    'exampleskin', -- track
+    'exampleskin', -- critical line
+    'editor', -- track edge
     'editor', -- lane divider
-    'builtin/light', -- extra track
-    'editor', -- extra critical line
-    'builtin/light', -- extra track edge
+    'exampleskin', -- extra track
+    'exampleskin', -- extra critical line
+    'exampleskin', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -92,13 +91,11 @@ skin_list.skinname = PlayfieldSkin:new(
 )
 ```
 
-- This is just a basic light side skin, but you can change the IDs to other built-in ones or add your own skin elements (explained below).
-  
-- Skin elements are stored in the folder `custom_playfield/sprites/skins/`. The folder names from here make up the skin IDs.
-  - As an example, to create your own skin, you create a new folder (let's say `exampleskin`) at the path above. Then, if you place all of your skin elements in here, you simply access them by typing `exampleskin` as the ID. If you choose to place some skin elements in their own folder (let's say `abc`) within `exampleskin/`, you would access those with `exampleskin/abc` as the full skin ID.
-  - The built-in skins use the `builtin` ID, which contains all default track skin types in its own sub-ID, for example `conflict` or `light`. Therefore the full skin IDs for them are `builtin/conflict` and `builtin/light` respectively.
-  - There's also a `criticalline` sub-ID containing all types of critical lines as well as all other skin elements under the `builtin` skin ID in case needed, but by default, skin elements not dependent on side/track skin are provided by the editor for `builtin` skins.
-- `editor` is a special skin ID used when you want the skin element to be taken from the skin set in the editor.
+- Skin elements are stored in the `custom_playfield/sprites/skins/` folder. The relative path from here makes up a skin's ID.
+  - As an example, to create your own skin, you would create a new folder (at `custom_playfield/sprites/skins/exampleskin`), then place all of your skin elements in there. From there, you access them by typing just `exampleskin` as the ID. For skin elements in a subfolder within `exampleskin` (let's say `variant_a` and `variant_b`), you access them by typing `exampleskin/variant_a` and `exampleskin/variant_b` respectively as the full skin IDs.
+  - The built-in skins use the `builtin` ID, which contains each default track skin type in its own sub-ID, like `conflict` and `light`. Therefore the full skin IDs for them are `builtin/conflict` and `builtin/light` respectively.
+  - Within `builtin` there's also a `criticalline` folder with its own subfolders containing all types of critical line, and also within `builtin` are the remaining skin elements (such as sky input line, track lane divider) in case needed, but by default, skin elements not dependent on side/track skin are provided by the editor settings for `builtin` skins.
+- `editor` is a unique skin ID which copies the specified skin element from the editor.
 
 - List of all skin elements:
   - Regular track:
@@ -110,10 +107,10 @@ skin_list.skinname = PlayfieldSkin:new(
     - Body: `TrackExtraBody.png`
     - Critical line: `TrackExtraCriticalLine.png`
     - Edge: `TrackExtraEdge.png`
-    - Lane divider: `TrackLaneDivider.png`
+    - Lane divider: `TrackExtraLaneDivider.png`
   - Sky input:
     - Line: `SkyInputLine.png`
     - Label: `SkyInputLabel.png`
-- You can find example images for all skin elements in the `builtin/` folder. As mentioned earlier, critical line types are stored under `builtin/criticallines/`.
+- The textures used in the `builtin` skin may be used as templates for your own skins.
 
 <hr>
