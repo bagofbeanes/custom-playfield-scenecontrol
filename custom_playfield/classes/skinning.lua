@@ -3,6 +3,9 @@ local constants = require 'custom_playfield.util.constants'
 local id_default = 'editor' -- by default, playfield elements will use the skin set in the editor
 local skin_path = 'custom_playfield/sprites/skins/'
 
+-- in current arccreate release, criticalline is positioned wrong and causes the sc to mess up criticalline placement, this fixes that
+local criticalline_offset = GetDefaultValue(Scene.track.translationZ) - GetDefaultValue(Scene.track.criticalLine2.translationY)
+
 -- -- Disable editor track -- --
 -- [[                      ]] --
 
@@ -189,12 +192,12 @@ function PlayfieldSkin.createTrackCriticalLineSprite(skin)
     SetDefaultValues(
         sprite,
         {
-            translationX = 0, translationY = 0, translationZ = 0,
+            translationX = 0, translationY = 0, translationZ = criticalline_offset,
             rotationX = 90, rotationY = 0, rotationZ = 0,
 
             colorR = 255, colorG = 255, colorB = 255, 
             colorH = 0, colorS = 0, colorV = 0,
-            colorA = 255
+            colorA = 255,
         }
     )
     CopyDefaultValues(
@@ -232,7 +235,7 @@ function PlayfieldSkin.createTrackEdgeSprite(skin)
 
         sprite = Scene.createSprite(skin_path .. id .. '/TrackEdge.png', 'default', 'background', xy(0.5, 0), 'repeat')
         
-        sprite.scaleY = 60
+        sprite.scaleY = 59.96094
         sprite.textureScaleX = -1
         sprite.textureScaleY = sprite.scaleY
         sprite.textureOffsetY = constants.trackWalk / sprite.scaleY
@@ -380,7 +383,7 @@ function PlayfieldSkin.createTrackExtraCriticalLineSprite(skin)
     SetDefaultValues(
         sprite,
         {
-            translationX = 0, translationY = 0,
+            translationX = 0, translationY = 0, translationZ = criticalline_offset,
             rotationX = 90, rotationY = 0, rotationZ = 0,
 
             colorR = 255, colorG = 255, colorB = 255, 
@@ -424,7 +427,7 @@ function PlayfieldSkin.createTrackExtraEdgeSprite(skin)
 
         sprite = Scene.createSprite(skin_path .. id .. '/TrackExtraEdge.png', 'default', 'background', xy(0.5, 0), 'repeat')
         
-        sprite.scaleY = 60
+        sprite.scaleY = 59.96094
         sprite.textureScaleX = -1
         sprite.textureScaleY = sprite.scaleY
         sprite.textureOffsetY = constants.trackWalk / sprite.scaleY
