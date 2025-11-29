@@ -22,13 +22,13 @@ skin_list.editor = PlayfieldSkin:new(
 
 skin_list.light = PlayfieldSkin:new(
 
-    'builtin/light', -- track
+    'default/light', -- track
     'editor', -- critical line
-    'builtin/light', -- track edge
+    'default/light', -- track edge
     'editor', -- lane divider
-    'builtin/light', -- extra track
+    'default/light', -- extra track
     'editor', -- extra critical line
-    'builtin/light', -- extra track edge
+    'default/light', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -37,13 +37,13 @@ skin_list.light = PlayfieldSkin:new(
 
 skin_list.conflict = PlayfieldSkin:new(
 
-    'builtin/conflict', -- track
+    'default/conflict', -- track
     'editor', -- critical line
-    'builtin/conflict', -- track edge
+    'default/conflict', -- track edge
     'editor', -- lane divider
-    'builtin/conflict', -- extra track
+    'default/conflict', -- extra track
     'editor', -- extra critical line
-    'builtin/conflict', -- extra track edge
+    'default/conflict', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -52,13 +52,13 @@ skin_list.conflict = PlayfieldSkin:new(
 
 skin_list.black = PlayfieldSkin:new(
 
-    'builtin/black', -- track
+    'default/black', -- track
     'editor', -- critical line
-    'builtin/black', -- track edge
+    'default/black', -- track edge
     'editor', -- lane divider
-    'builtin/conflict', -- extra track
+    'default/conflict', -- extra track
     'editor', -- extra critical line
-    'builtin/black', -- extra track edge
+    'default/black', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -67,13 +67,13 @@ skin_list.black = PlayfieldSkin:new(
 
 skin_list.nijuusei = PlayfieldSkin:new(
 
-    'builtin/nijuusei', -- track
+    'default/nijuusei', -- track
     'editor', -- critical line
-    'builtin/nijuusei', -- track edge
+    'default/nijuusei', -- track edge
     'editor', -- lane divider
-    'builtin/conflict', -- extra track
+    'default/conflict', -- extra track
     'editor', -- extra critical line
-    'builtin/nijuusei', -- extra track edge
+    'default/nijuusei', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -82,13 +82,13 @@ skin_list.nijuusei = PlayfieldSkin:new(
 
 skin_list.rei = PlayfieldSkin:new(
 
-    'builtin/rei', -- track
+    'default/rei', -- track
     'editor', -- critical line
-    'builtin/rei', -- track edge
+    'default/rei', -- track edge
     'editor', -- lane divider
-    'builtin/light', -- extra track
+    'default/light', -- extra track
     'editor', -- extra critical line
-    'builtin/rei', -- extra track edge
+    'default/rei', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -97,13 +97,13 @@ skin_list.rei = PlayfieldSkin:new(
 
 skin_list.darkvs = PlayfieldSkin:new(
 
-    'builtin/darkvs', -- track
+    'default/darkvs', -- track
     'editor', -- critical line
-    'builtin/darkvs', -- track edge
+    'default/darkvs', -- track edge
     'editor', -- lane divider
-    'ebuiltin/conflict', -- extra track
+    'default/conflict', -- extra track
     'editor', -- extra critical line
-    'builtin/darkvs', -- extra track edge
+    'default/darkvs', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -112,13 +112,13 @@ skin_list.darkvs = PlayfieldSkin:new(
 
 skin_list.tempest = PlayfieldSkin:new(
 
-    'builtin/tempest', -- track
+    'default/tempest', -- track
     'editor', -- critical line
-    'builtin/tempest', -- track edge
+    'default/tempest', -- track edge
     'editor', -- lane divider
-    'builtin/conflict', -- extra track
+    'default/conflict', -- extra track
     'editor', -- extra critical line
-    'builtin/tempest', -- extra track edge
+    'default/tempest', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -127,13 +127,13 @@ skin_list.tempest = PlayfieldSkin:new(
 
 skin_list.finale = PlayfieldSkin:new(
 
-    'builtin/finale', -- track
+    'default/finale', -- track
     'editor', -- critical line
-    'builtin/finale', -- track edge
+    'default/finale', -- track edge
     'editor', -- lane divider
-    'builtin/conflict', -- extra track
+    'default/conflict', -- extra track
     'editor', -- extra critical line
-    'builtin/finale', -- extra track edge
+    'default/finale', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -142,13 +142,13 @@ skin_list.finale = PlayfieldSkin:new(
 
 skin_list.pentiment = PlayfieldSkin:new(
 
-    'builtin/pentiment', -- track
+    'default/pentiment', -- track
     'editor', -- critical line
-    'builtin/pentiment', -- track edge
+    'default/pentiment', -- track edge
     'editor', -- lane divider
-    'builtin/conflict', -- extra track
+    'default/conflict', -- extra track
     'editor', -- extra critical line
-    'builtin/pentiment', -- extra track edge
+    'default/pentiment', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -157,13 +157,13 @@ skin_list.pentiment = PlayfieldSkin:new(
 
 skin_list.arcana = PlayfieldSkin:new(
 
-    'builtin/arcana', -- track
+    'default/arcana', -- track
     'editor', -- critical line
-    'builtin/arcana', -- track edge
+    'default/arcana', -- track edge
     'editor', -- lane divider
-    'builtin/conflict', -- extra track
+    'default/conflict', -- extra track
     'editor', -- extra critical line
-    'builtin/arcana', -- extra track edge
+    'default/arcana', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -172,13 +172,13 @@ skin_list.arcana = PlayfieldSkin:new(
 
 skin_list.colorless = PlayfieldSkin:new(
 
-    'builtin/colorless', -- track
+    'default/colorless', -- track
     'editor', -- critical line
-    'builtin/colorless', -- track edge
+    'default/colorless', -- track edge
     'editor', -- lane divider
-    'builtin/light', -- extra track
+    'default/light', -- extra track
     'editor', -- extra critical line
-    'builtin/colorless', -- extra track edge
+    'default/colorless', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label

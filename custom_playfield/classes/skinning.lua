@@ -1,7 +1,7 @@
 local constants = require 'custom_playfield.util.constants'
 
 local id_default = 'editor' -- by default, playfield elements will use the skin set in the editor
-local skin_path = 'custom_playfield/sprites/skins/'
+local skin_path = 'custom_playfield/skins/'
 
 -- in current arccreate release, criticalline is positioned wrong and causes the sc to mess up criticalline placement, this fixes that
 local criticalline_offset = GetDefaultValue(Scene.track.translationZ) - GetDefaultValue(Scene.track.criticalLine2.translationY)
