@@ -75,15 +75,15 @@ Scenecontrol to provide more extensive control over the ArcCreate playfield.
 - To expand this list, go to `custom_playfield/skinlist.lua` and create your own skin using a format similar to the following:
   
 ```lua
-skin_list.exampleskin = PlayfieldSkin:new(
+skin_list.skinname = PlayfieldSkin:new(
 
-    'exampleskin', -- track
-    'exampleskin', -- critical line
+    'skinname', -- track
+    'skinname', -- critical line
     'editor', -- track edge
     'editor', -- lane divider
-    'exampleskin', -- extra track
-    'exampleskin', -- extra critical line
-    'exampleskin', -- extra track edge
+    'skinname', -- extra track
+    'skinname', -- extra critical line
+    'skinname', -- extra track edge
     'editor', -- extra track lane divider
     'editor', -- sky input line
     'editor' -- sky input label
@@ -91,13 +91,13 @@ skin_list.exampleskin = PlayfieldSkin:new(
 )
 ```
 
-- Skin elements are stored in the `custom_playfield/sprites/skins/` folder. The relative path from here makes up a skin's ID.
-  - As an example, to create your own skin, you would create a new folder (at `custom_playfield/sprites/skins/exampleskin`), then place all of your skin elements in there. From there, you access them by typing just `exampleskin` as the ID. For skin elements in a subfolder within `exampleskin` (let's say `variant_a` and `variant_b`), you access them by typing `exampleskin/variant_a` and `exampleskin/variant_b` respectively as the full skin IDs.
-  - The built-in skins use the `builtin` ID, which contains each default track skin type in its own sub-ID, like `conflict` and `light`. Therefore the full skin IDs for them are `builtin/conflict` and `builtin/light` respectively.
-  - Within `builtin` there's also a `criticalline` folder with its own subfolders containing all types of critical line, and also within `builtin` are the remaining skin elements (such as sky input line, track lane divider) in case needed, but by default, skin elements not dependent on side/track skin are provided by the editor settings for `builtin` skins.
-- `editor` is a unique skin ID which copies the specified skin element from the editor.
+- ...where `editor` is a unique skin ID which just copies the specified skin element from the editor.
+- Custom skin elements are stored in the `custom_playfield/sprites/skins/` folder. The relative path from here makes up a skin's ID.
+  - As an example, to create your own skin, you would create a new folder (at `custom_playfield/skins/skinname`), then place all of your skin elements in there. From there, you access them by typing just `skinname` as the ID. For skin elements in a subfolder within `skinname` (let's say `variant_a` and `variant_b`), you access them by typing `skinname/variant_a` and `skinname/variant_b` respectively as the full skin IDs.
+  - The default ArcCreate skins use the `default` ID, containing each default track skin type in its own sub-ID, like `conflict` and `light`. The full skin IDs for these are `default/conflict` and `default/light` respectively.
+  - Within `default` there's also a `criticalline` folder with its own subfolders containing all critical line (floor judgement line) types. The remaining sprites (such as sky input line, track lane divider) are in `default` in case needed, but in this skin's case, skin elements not dependent on side/track skin are provided by the editor settings.
 
-- List of all skin elements:
+- The names of the skin elements are as follows:
   - Regular track:
     - Body: `TrackBody.png`
     - Critical line: `TrackCriticalLine.png`
@@ -111,6 +111,6 @@ skin_list.exampleskin = PlayfieldSkin:new(
   - Sky input:
     - Line: `SkyInputLine.png`
     - Label: `SkyInputLabel.png`
-- The textures used in the `builtin` skin may be used as templates for your own skins.
+- It's advised to use the textures in `default` as templates for your own skin elements.
 
 <hr>
