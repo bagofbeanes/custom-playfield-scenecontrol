@@ -12,6 +12,7 @@ local function setlanecount_main(self, lane_count, start_timing, end_timing, eas
 
     local track_lane_count;     if is_extra then track_lane_count = self.laneCountExtra else track_lane_count = self.laneCount end
     local track_body;           if is_extra then track_body = self.trackExtraBody else track_body = self.trackBody end
+    local track_criticalline;   if is_extra then track_criticalline = self.trackExtraCriticalLine else track_criticalline = self.trackCriticalLine end
     local track_edgeL;          if is_extra then track_edgeL = self.trackExtraEdgeL else track_edgeL = self.trackEdgeL end
     local track_edgeR;          if is_extra then track_edgeR = self.trackExtraEdgeR else track_edgeR = self.trackEdgeR end
     local track_lanedividers;   if is_extra then track_lanedividers = self.trackExtraLaneDividers else track_lanedividers = self.trackLaneDividers end
@@ -25,6 +26,9 @@ local function setlanecount_main(self, lane_count, start_timing, end_timing, eas
     
         if (track_body ~= nil) then
             Tween(track_body.transformLayers[2].scaleX, track_width, start_timing, end_timing, easing)
+        end
+        if (track_criticalline ~= nil) then
+            Tween(track_criticalline.transformLayers[2].scaleX, track_width, start_timing, end_timing, easing)
         end
 
     end

@@ -175,8 +175,6 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
 
     -- -- Track initialization -- --
     -- [[                      ]] --
-
-    local track_scale = CreateKey(0) -- Lane count stuff
     
     ControllerObject.setParentC(o.trackController, o.playfieldController)
     ControllerObject.setParentC(o.trackEdgeController, o.trackController)
@@ -184,7 +182,7 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
     
     if (o.trackBody ~= nil) then
         
-        o.trackBody.transformLayers[2].scaleX = track_scale
+        o.trackBody.transformLayers[2].scaleX = CreateKey(0)
         ControllerObject.setParentC(o.trackBody, o.trackController)
         o.trackBody.textureScaleX = -(o.laneCount / 4) -- makes track texture not stretch with lane count
         
@@ -204,7 +202,7 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
     
     if (o.trackCriticalLine ~= nil) then
         
-        o.trackCriticalLine.transformLayers[2].scaleX = track_scale
+        o.trackCriticalLine.transformLayers[2].scaleX = CreateKey(0)
         ControllerObject.setParentC(o.trackCriticalLine, o.trackController)
         
     end
@@ -219,10 +217,10 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
             local lanedivider = o.trackLaneDividers[i].transformLayers[2]
             lanedivider.translationX = CreateKey(-constants.laneWidth * i)
             if (i ~= 0) then
-
-                local lanedivider_track_edge = ((i < 0 and o.trackEdgeL) or (i > 0 and o.trackEdgeR)).transformLayers[2]
-                local epsilon = 0.3
-                lanedivider.active = math.sign(i) * (lanedivider.translationX - lanedivider_track_edge.translationX) + epsilon -- Activate based on whether or not the line is within the track boundary
+                
+                local abs_i = math.abs(i)
+                local lane_count_half = (o.laneCount / 2)
+                lanedivider.active =  lane_count_half - abs_i + 1 -- Activate based on whether or not the line is within the track boundary
 
             end
 
@@ -236,8 +234,6 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
     
     -- -- Extra track initialization -- --
     -- [[                            ]] --
-
-    local trackextra_scale = CreateKey(0) -- Lane count stuff
     
     ControllerObject.setParentC(o.trackExtraController, o.playfieldController)
     ControllerObject.setParentC(o.trackExtraEdgeController, o.trackExtraController)
@@ -246,7 +242,7 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
     
     if (o.trackExtraBody ~= nil) then
         
-        o.trackExtraBody.transformLayers[2].scaleX = trackextra_scale
+        o.trackExtraBody.transformLayers[2].scaleX = CreateKey(0)
         ControllerObject.setParentC(o.trackExtraBody, o.trackExtraController)
         
     end
@@ -265,7 +261,7 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
     
     if (o.trackExtraCriticalLine ~= nil) then
         
-        o.trackExtraCriticalLine.transformLayers[2].scaleX = trackextra_scale
+        o.trackExtraCriticalLine.transformLayers[2].scaleX = CreateKey(0)
         ControllerObject.setParentC(o.trackExtraCriticalLine, o.trackExtraController)
         
     end
@@ -281,10 +277,10 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
             lanedivider.translationX = CreateKey(-constants.laneWidth * i)
             if (i ~= 0) then
 
-                local lanedivider_track_edge = ((i < 0 and o.trackExtraEdgeL) or (i > 0 and o.trackExtraEdgeR)).transformLayers[2]
-                local epsilon = 0.3
-                lanedivider.active = math.sign(i) * (lanedivider.translationX - lanedivider_track_edge.translationX) + epsilon -- Activate based on whether or not the line is within the extra track boundary
-
+                local abs_i = math.abs(i)
+                local lane_count_half = (o.laneCount / 2)
+                lanedivider.active =  lane_count_half - abs_i + 1 -- Activate based on whether or not the line is within the track boundary
+                
             end
 
         end
