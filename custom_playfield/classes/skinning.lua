@@ -341,7 +341,7 @@ function PlayfieldSkin.createTrackExtraBodySprite(skin)
         sprite,
         {
             translationX = 0, translationY = 0,
-            rotationX = 90, rotationY = 0, rotationZ = 0,
+            rotationX = -90, rotationY = 0, rotationZ = 0,
             scaleX = 212.5 * 8,
 
             colorR = 255, colorG = 255, colorB = 255, 
