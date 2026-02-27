@@ -71,7 +71,7 @@ Scenecontrol to provide more extensive control over the ArcCreate playfield.
 
 ### > Playfield skinning
 
-- As previously mentioned, this scenecontrol allows the skinning of each playfield. By default, there are built-in skins which use ArcCreate's assets, accessible via the `SkinList` module.
+- As previously mentioned, this scenecontrol allows the skinning of the playfield. By default, there are built-in skins which use ArcCreate's assets, accessible via the `SkinList` module.
 - To expand this list, go to `custom_playfield/skinlist.lua` and create your own skin using a format similar to the following:
   
 ```lua
@@ -93,24 +93,27 @@ skin_list.skinname = PlayfieldSkin:new(
 
 - ...where `editor` is a unique skin ID which just copies the specified skin element from the editor.
 - Custom skin elements are stored in the `custom_playfield/sprites/skins/` folder. The relative path from here makes up a skin's ID.
-  - As an example, to create your own skin, you would create a new folder (at `custom_playfield/skins/skinname`), then place all of your skin elements in there. From there, you access them by typing just `skinname` as the ID. For skin elements in a subfolder within `skinname` (let's say `variant_a` and `variant_b`), you access them by typing `skinname/variant_a` and `skinname/variant_b` respectively as the full skin IDs.
-  - The default ArcCreate skins use the `default` ID, containing each default track skin type in its own sub-ID, like `conflict` and `light`. The full skin IDs for these are `default/conflict` and `default/light` respectively.
-  - Within `default` there's also a `criticalline` folder with its own subfolders containing all critical line (floor judgement line) types. The remaining sprites (such as sky input line, track lane divider) are in `default` in case needed, but in this skin's case, skin elements not dependent on side/track skin are provided by the editor settings.
+  - As an example, to create your own skin called `skinname`, you would create a new folder at `custom_playfield/skins/skinname`, then place all of your skin elements in there. From there, you access them by putting `skinname` as the ID. For skin elements in a subfolder within `skinname` (let's say `a` and `b`), you access them by typing `skinname/a` and `skinname/b` respectively as the full skin IDs.
+  - All ArcCreate skins are packaged with the scenecontrol by default. Besides the expected skin folders, there is also:
+    - `def`, which contains all skin independent elements, like lane dividers and the sky input elements
+    - `cl`, which contains all variants of the critical line (the floor judgement line)
 
-- The names of the skin elements are as follows:
+- The names of all skin elements are as follows:
   - Regular track:
-    - Body: `TrackBody.png`
-    - Critical line: `TrackCriticalLine.png`
-    - Edge: `TrackEdge.png`
-    - Lane divider: `TrackLaneDivider.png`
+    - Body: `trbo.png`
+    - Critical line: `trcl.png`
+    - Edge: `tred.png`
+    - Lane divider: `trld.png`
   - Extra track:
-    - Body: `TrackExtraBody.png`
-    - Critical line: `TrackExtraCriticalLine.png`
-    - Edge: `TrackExtraEdge.png`
-    - Lane divider: `TrackExtraLaneDivider.png`
+    - Body: `tebo.png`
+    - Critical line: `tecl.png`
+    - Edge: `teed.png`
+    - Lane divider: `teld.png`
   - Sky input:
-    - Line: `SkyInputLine.png`
-    - Label: `SkyInputLabel.png`
-- It's advised to use the textures in `default` as templates for your own skin elements.
+    - Line: `sili.png`
+    - Label: `sila.png`
+- Use the preexisting textures as templates for your own skin elements.
+- Try to keep your skin paths as short as possible, since making it too long will result in the chart failing to load on iOS devices.
+- Make sure to delete any unused skin folders in order to reduce file size.
 
 <hr>

@@ -1,10 +1,22 @@
 local constants = require 'custom_playfield.util.constants'
 
-local id_default = 'editor' -- by default, playfield elements will use the skin set in the editor
-local skin_path = 'custom_playfield/skins/'
-
+local ID_DEFAULT = 'editor' -- by default, playfield elements will use the skin set in the editor
+local SKIN_PATH = 'custom_playfield/skins/'
 -- in current arccreate release, criticalline is positioned wrong and causes the sc to mess up criticalline placement, this fixes that
-local criticalline_offset = GetDefaultValue(Scene.track.translationZ) - GetDefaultValue(Scene.track.criticalLine2.translationY)
+local CRITICALLINE_COMPAT_OFFSET = GetDefaultValue(Scene.track.translationZ) - GetDefaultValue(Scene.track.criticalLine2.translationY)
+
+local SKIN_NAMES = {
+    TrackBody = 'trbo',
+    TrackCriticalLine = 'trcl',
+    TrackEdge = 'tred',
+    TrackLaneDivider = 'trld',
+    TrackExtraBody = 'tebo',
+    TrackExtraCriticalLine = 'tecl',
+    TrackExtraEdge = 'teed',
+    TrackExtraLaneDivider = 'teld',
+    SkyInputLabel = 'sila',
+    SkyInputLine = 'sili',
+}
 
 -- -- Disable editor track -- --
 -- [[                      ]] --
@@ -59,16 +71,16 @@ function PlayfieldSkin:new(id_track_body, id_track_criticalline, id_track_edge, 
 
     local o = {
 
-        trackBody = id_track_body                           or id_default,
-        trackCriticalLine = id_track_criticalline           or id_default,
-        trackEdge = id_track_edge                           or id_default,
-        trackLaneDivider = id_track_lanedivider             or id_default,
-        trackExtraBody = id_trackextra_body                 or id_default,
-        trackExtraCriticalLine = id_trackextra_criticalline or id_default,
-        trackExtraEdge = id_trackextra_edge                 or id_default,
-        trackExtraLaneDivider = id_trackextra_lanedivider   or id_default,
-        skyInputLine = id_skyinputline                      or id_default,
-        skyInputLabel = id_skyinputlabel                    or id_default
+        trackBody = id_track_body                           or ID_DEFAULT,
+        trackCriticalLine = id_track_criticalline           or ID_DEFAULT,
+        trackEdge = id_track_edge                           or ID_DEFAULT,
+        trackLaneDivider = id_track_lanedivider             or ID_DEFAULT,
+        trackExtraBody = id_trackextra_body                 or ID_DEFAULT,
+        trackExtraCriticalLine = id_trackextra_criticalline or ID_DEFAULT,
+        trackExtraEdge = id_trackextra_edge                 or ID_DEFAULT,
+        trackExtraLaneDivider = id_trackextra_lanedivider   or ID_DEFAULT,
+        skyInputLine = id_skyinputline                      or ID_DEFAULT,
+        skyInputLabel = id_skyinputlabel                    or ID_DEFAULT
 
     }
 
@@ -89,6 +101,10 @@ function PlayfieldSkin:new(id_track_body, id_track_criticalline, id_track_edge, 
 
     return proxy
 
+end
+
+local function get_skin_path(id, name)
+    return SKIN_PATH .. id .. '/' .. name .. '.png'
 end
 
 local function disable_track_elements(track)
@@ -125,7 +141,7 @@ function PlayfieldSkin.createTrackBodySprite(skin)
     local sprite
 
     -- default skin specific inits
-    if (id == id_default) then
+    if (id == ID_DEFAULT) then
 
         sprite = track_default.copy()
         disable_track_elements(sprite)
@@ -135,7 +151,7 @@ function PlayfieldSkin.createTrackBodySprite(skin)
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/TrackBody.png', 'default', 'background', xy(0.5, 0), 'repeat')
+        sprite = Scene.createSprite(get_skin_path(id, SKIN_NAMES.TrackBody), 'default', 'background', xy(0.5, 0), 'repeat')
         
         sprite.scaleY = 59.96094
         sprite.textureScaleX = -1
@@ -177,14 +193,14 @@ function PlayfieldSkin.createTrackCriticalLineSprite(skin)
     local sprite
 
     -- default skin specific inits
-    if (id == id_default) then
+    if (id == ID_DEFAULT) then
 
         sprite = track_default.criticalLine2.copy()
     
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/TrackCriticalLine.png', 'default', 'background', xy(0.5, 0.5), 'repeat')
+        sprite = Scene.createSprite(get_skin_path(id, SKIN_NAMES.TrackCriticalLine), 'default', 'background', xy(0.5, 0.5), 'repeat')
 
     end
 
@@ -192,7 +208,7 @@ function PlayfieldSkin.createTrackCriticalLineSprite(skin)
     SetDefaultValues(
         sprite,
         {
-            translationX = 0, translationY = 0, translationZ = criticalline_offset,
+            translationX = 0, translationY = 0, translationZ = CRITICALLINE_COMPAT_OFFSET,
             rotationX = 90, rotationY = 0, rotationZ = 0,
 
             colorR = 255, colorG = 255, colorB = 255, 
@@ -223,7 +239,7 @@ function PlayfieldSkin.createTrackEdgeSprite(skin)
     local sprite
 
     -- default skin specific inits
-    if (id == id_default) then
+    if (id == ID_DEFAULT) then
 
         sprite = track_default.edgeExtraL.copy()
 
@@ -233,7 +249,7 @@ function PlayfieldSkin.createTrackEdgeSprite(skin)
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/TrackEdge.png', 'default', 'background', xy(0.5, 0), 'repeat')
+        sprite = Scene.createSprite(get_skin_path(id, SKIN_NAMES.TrackEdge), 'default', 'background', xy(0.5, 0), 'repeat')
         
         sprite.scaleY = 59.96094
         sprite.textureScaleX = -1
@@ -272,7 +288,7 @@ function PlayfieldSkin.createTrackLaneDividerSprite(skin)
     local sprite
 
     -- default skin specific inits
-    if (id == id_default) then
+    if (id == ID_DEFAULT) then
 
         sprite = track_default.divideLine23.copy()
         
@@ -282,7 +298,7 @@ function PlayfieldSkin.createTrackLaneDividerSprite(skin)
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/TrackLaneDivider.png', 'default', 'background', xy(0.5, 0), 'repeat')
+        sprite = Scene.createSprite(get_skin_path(id, SKIN_NAMES.TrackLaneDivider), 'default', 'background', xy(0.5, 0), 'repeat')
         
         sprite.scaleX = GetDefaultValue(track_default.divideLine23.scaleX) * GetDefaultValue(track_default.scaleX)
         sprite.scaleY = 18.74961
@@ -321,7 +337,7 @@ function PlayfieldSkin.createTrackExtraBodySprite(skin)
     local sprite
 
     -- default skin specific inits
-    if (id == id_default) then
+    if (id == ID_DEFAULT) then
 
         sprite = track_default.extraL.copy()
 
@@ -330,7 +346,7 @@ function PlayfieldSkin.createTrackExtraBodySprite(skin)
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/TrackExtraBody.png', 'default', 'background', xy(0.5, 0), 'repeat')
+        sprite = Scene.createSprite(get_skin_path(id, SKIN_NAMES.TrackExtraBody), 'default', 'background', xy(0.5, 0), 'repeat')
         
         sprite.scaleY = 15.35 -- 153.5/2.55 - might need this
 
@@ -368,14 +384,14 @@ function PlayfieldSkin.createTrackExtraCriticalLineSprite(skin)
     local sprite
 
     -- default skin specific inits
-    if (id == id_default) then
+    if (id == ID_DEFAULT) then
 
         sprite = track_default.criticalLine0.copy()
     
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/TrackExtraCriticalLine.png', 'default', 'background', xy(0.5, 0.5), 'repeat')
+        sprite = Scene.createSprite(get_skin_path(id, SKIN_NAMES.TrackExtraCriticalLine), 'default', 'background', xy(0.5, 0.5), 'repeat')
 
     end
 
@@ -383,7 +399,7 @@ function PlayfieldSkin.createTrackExtraCriticalLineSprite(skin)
     SetDefaultValues(
         sprite,
         {
-            translationX = 0, translationY = 0, translationZ = criticalline_offset,
+            translationX = 0, translationY = 0, translationZ = CRITICALLINE_COMPAT_OFFSET,
             rotationX = 90, rotationY = 0, rotationZ = 0,
 
             colorR = 255, colorG = 255, colorB = 255, 
@@ -415,7 +431,7 @@ function PlayfieldSkin.createTrackExtraEdgeSprite(skin)
     local sprite
 
     -- default skin specific inits
-    if (id == id_default) then
+    if (id == ID_DEFAULT) then
 
         sprite = track_default.edgeExtraL.copy()
 
@@ -425,7 +441,7 @@ function PlayfieldSkin.createTrackExtraEdgeSprite(skin)
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/TrackExtraEdge.png', 'default', 'background', xy(0.5, 0), 'repeat')
+        sprite = Scene.createSprite(get_skin_path(id, SKIN_NAMES.TrackExtraEdge), 'default', 'background', xy(0.5, 0), 'repeat')
         
         sprite.scaleY = 59.96094
         sprite.textureScaleX = -1
@@ -464,7 +480,7 @@ function PlayfieldSkin.createTrackExtraLaneDividerSprite(skin)
     local sprite
 
     -- default skin specific inits
-    if (id == id_default) then
+    if (id == ID_DEFAULT) then
 
         sprite = track_default.divideLine01.copy()
         
@@ -473,7 +489,7 @@ function PlayfieldSkin.createTrackExtraLaneDividerSprite(skin)
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/TrackExtraLaneDivider.png', 'default', 'background', xy(0.5, 0), 'repeat')
+        sprite = Scene.createSprite(get_skin_path(id, SKIN_NAMES.TrackExtraLaneDivider), 'default', 'background', xy(0.5, 0), 'repeat')
         
         sprite.scaleY = 12.43724
 
@@ -509,14 +525,14 @@ function PlayfieldSkin.createSkyInputLineSprite(skin)
     local sprite
 
     -- default skin specific inits
-    if (id == id_default) then
+    if (id == ID_DEFAULT) then
 
         sprite = Scene.skyInputLine.copy()
     
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/SkyInputLine.png', 'default', 'background', xy(0.5, 0.5), 'repeat')
+        sprite = Scene.createSprite(get_skin_path(id, SKIN_NAMES.SkyInputLine), 'default', 'background', xy(0.5, 0.5), 'repeat')
 
     end
 
@@ -554,7 +570,7 @@ function PlayfieldSkin.createSkyInputLabelSprite(skin)
     local sprite
 
     -- default skin specific inits
-    if (id == id_default) then
+    if (id == ID_DEFAULT) then
 
         sprite = Scene.skyInputLabel.copy()
         CopyDefaultValues(
@@ -568,7 +584,7 @@ function PlayfieldSkin.createSkyInputLabelSprite(skin)
     -- custom skin specific inits
     else
 
-        sprite = Scene.createSprite(skin_path .. id .. '/SkyInputLabel.png', 'default', 'background', xy(0.5, 0.5), 'repeat')
+        sprite = Scene.createSprite(get_skin_path(id, SKIN_NAMES.TrackExtraCriticalLine), 'default', 'background', xy(0.5, 0.5), 'repeat')
         SetDefaultValues(
             sprite,
             {
