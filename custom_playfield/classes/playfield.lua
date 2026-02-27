@@ -220,7 +220,7 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
                 
                 local abs_i = math.abs(i)
                 local lane_count_half = (o.laneCount / 2)
-                lanedivider.active =  lane_count_half - abs_i + 1 -- Activate based on whether or not the line is within the track boundary
+                lanedivider.active =  lane_count_half - abs_i + 0.505 -- Activate based on whether or not the line is within the track boundary
 
             end
 
@@ -279,7 +279,7 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
 
                 local abs_i = math.abs(i)
                 local lane_count_half = (o.laneCount / 2)
-                lanedivider.active =  lane_count_half - abs_i + 1 -- Activate based on whether or not the line is within the track boundary
+                lanedivider.active =  lane_count_half - abs_i + 0.505 -- Activate based on whether or not the line is within the track boundary
                 
             end
 
