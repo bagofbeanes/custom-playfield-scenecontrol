@@ -9,6 +9,7 @@ local constants = require 'custom_playfield.util.constants'
 local function setlanecount_main(self, lane_count, start_timing, end_timing, easing, is_extra)
 
     start_timing = start_timing or constants.timingDefault
+    end_timing = end_timing or start_timing
 
     local track_lane_count;     if is_extra then track_lane_count = self.laneCountExtra else track_lane_count = self.laneCount end
     local track_body;           if is_extra then track_body = self.trackExtraBody else track_body = self.trackBody end
