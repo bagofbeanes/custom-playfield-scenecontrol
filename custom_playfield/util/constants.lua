@@ -1,4 +1,4 @@
-local default_track = Scene.track
+local DEFAULT_TRACK = Scene.track
 local function truncate(x, decimals)
 
     if (decimals < 1) then decimals = 1 end
@@ -16,7 +16,7 @@ local constants = {}
 constants.timingDefault = -9999
 
 -- Width of a single lane
-constants.laneWidth = truncate(math.abs(default_track.divideLine12.translationX.valueAt(constants.timingDefault) - default_track.divideLine23.translationX.valueAt(constants.timingDefault)) * default_track.scaleX.valueAt(constants.timingDefault), 2)
+constants.laneWidth = truncate(math.abs(DEFAULT_TRACK.divideLine12.translationX.valueAt(constants.timingDefault) - DEFAULT_TRACK.divideLine23.translationX.valueAt(constants.timingDefault)) * DEFAULT_TRACK.scaleX.valueAt(constants.timingDefault), 2)
 
 local basebpm = BASE_BPM or Context.bpm(0).valueAt(constants.timingDefault)
 
