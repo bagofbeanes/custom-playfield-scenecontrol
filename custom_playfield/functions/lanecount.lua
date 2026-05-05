@@ -11,15 +11,17 @@ local function setlanecount_main(self, lane_count, start_timing, end_timing, eas
     start_timing = start_timing or constants.timingDefault
     end_timing = end_timing or start_timing
 
-    local track_lane_count;     if is_extra then track_lane_count = self.laneCountExtra else track_lane_count = self.laneCount end
-    local track_body;           if is_extra then track_body = self.trackExtraBody else track_body = self.trackBody end
-    local track_criticalline;   if is_extra then track_criticalline = self.trackExtraCriticalLine else track_criticalline = self.trackCriticalLine end
-    local track_edgeL;          if is_extra then track_edgeL = self.trackExtraEdgeL else track_edgeL = self.trackEdgeL end
-    local track_edgeR;          if is_extra then track_edgeR = self.trackExtraEdgeR else track_edgeR = self.trackEdgeR end
-    local track_lanedividers;   if is_extra then track_lanedividers = self.trackExtraLaneDividers else track_lanedividers = self.trackLaneDividers end
+    local track_lane_count;             if is_extra then track_lane_count = self.laneCountExtra else track_lane_count = self.laneCount end
+    local track_lane_count_rounded;     if is_extra then track_lane_count_rounded = self._laneCountExtraRounded else track_lane_count_rounded = self._laneCountRounded end
+    local track_body;                   if is_extra then track_body = self.trackExtraBody else track_body = self.trackBody end
+    local track_criticalline;           if is_extra then track_criticalline = self.trackExtraCriticalLine else track_criticalline = self.trackCriticalLine end
+    local track_edgeL;                  if is_extra then track_edgeL = self.trackExtraEdgeL else track_edgeL = self.trackEdgeL end
+    local track_edgeR;                  if is_extra then track_edgeR = self.trackExtraEdgeR else track_edgeR = self.trackEdgeR end
+    local track_lanedividers;           if is_extra then track_lanedividers = self.trackExtraLaneDividers else track_lanedividers = self.trackLaneDividers end
 
     lane_count = math.clamp(lane_count, 0, self.maxLaneCount)
     Tween(track_lane_count, lane_count, start_timing, end_timing, easing)
+    Tween(track_lane_count_rounded, lane_count + (lane_count % 2), start_timing, end_timing, easing)
     
     local track_width = math.max(0, lane_count / 4) -- Slightly smaller than needed to account for lane divider visibility between the regular and the extra track
 
@@ -48,7 +50,7 @@ local function setlanecount_main(self, lane_count, start_timing, end_timing, eas
 
         if (track_lanedividers ~= nil) then
     
-            local max_lane_count_half = math.floor(self.maxLaneCount / 2) -- Lanes on one half of the track
+            local max_lane_count_half = math.ceil(self.maxLaneCount / 2) -- Lanes on one half of the track
             local line_count_half = math.max(0, lane_count / 2) -- Amount of lines that should appear on one half of the track
 
             for i = -max_lane_count_half, max_lane_count_half do

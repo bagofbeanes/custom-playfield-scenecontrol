@@ -106,13 +106,15 @@ Playfield.__index = Playfield
 function Playfield:new(skin, max_lane_count, ignoreoptions)
 
     ignoreoptions = ignoreoptions or 0
-    local lanes_half = math.floor(max_lane_count / 2)
+    local lanes_half = math.ceil(max_lane_count / 2)
 
     local o = {
 
         maxLaneCount = max_lane_count,
         laneCount = CreateKey(0),
+        _laneCountRounded = CreateKey(0), -- rounded to the nearest even number, used internally
         laneCountExtra = CreateKey(0),
+        _laneCountExtraRounded = CreateKey(0), -- rounded to the nearest even number, used internally
 
         -- -- Playfield elements -- --
 
@@ -219,9 +221,9 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
             if (i ~= 0) then
                 
                 local abs_i = math.abs(i)
-                local lane_count_half = (o.laneCount / 2)
-                lanedivider.active =  lane_count_half - abs_i + 0.505 -- Activate based on whether or not the line is within the track boundary
-
+                local lane_count_half = (o._laneCountRounded / 2)
+                lanedivider.active = lane_count_half - abs_i + 0.505 -- Activate based on whether or not the line is within the track boundary
+                
             end
 
         end
@@ -278,7 +280,7 @@ function Playfield:new(skin, max_lane_count, ignoreoptions)
             if (i ~= 0) then
 
                 local abs_i = math.abs(i)
-                local lane_count_half = (o.laneCount / 2)
+                local lane_count_half = (o._laneCountExtraRounded / 2)
                 lanedivider.active =  lane_count_half - abs_i + 0.505 -- Activate based on whether or not the line is within the track boundary
                 
             end
